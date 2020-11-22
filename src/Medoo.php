@@ -2,7 +2,7 @@
 /*!
  * Medoo database framework
  * https://medoo.in
- * Version 1.7.10
+ * Version 1.7.12
  *
  * Copyright 2020, Angel Lai
  * Released under the MIT license
@@ -519,9 +519,9 @@ class Medoo
 		return [$value, $map[ $type ]];
 	}
 
-	protected function columnQuote($string)
+	protected function columnQuote($string, $doclean = true)
 	{
-		if (!preg_match('/^[a-zA-Z0-9_]+(\.?[a-zA-Z0-9_]+)?$/i', $string))
+		if ($doclean && !preg_match('/^[a-zA-Z0-9_]+(\.?[a-zA-Z0-9_]+)?$/i', $string))
 		{
 			throw new InvalidArgumentException("Incorrect column name \"$string\"");
 		}
@@ -1476,12 +1476,9 @@ class Medoo
 			$stack[] = '(' . implode(', ', $values) . ')';
 		}
 
-		if($clean)
+		foreach ($columns as $key)
 		{
-			foreach ($columns as $key)
-			{
-				$fields[] = $this->columnQuote(preg_replace("/(\s*\[JSON\]$)/i", '', $key));
-			}
+			$fields[] = $this->columnQuote(preg_replace("/(\s*\[JSON\]$)/i", '', $key), $clean);
 		}
 		
 
@@ -1495,10 +1492,7 @@ class Medoo
 
 		foreach ($data as $key => $value)
 		{
-			if($clean)
-			{
-				$column = $this->columnQuote(preg_replace("/(\s*\[(JSON|\+|\-|\*|\/)\]$)/i", '', $key));
-			}
+			$column = $this->columnQuote(preg_replace("/(\s*\[(JSON|\+|\-|\*|\/)\]$)/i", '', $key), $clean);
 			
 
 			if ($raw = $this->buildRaw($value, $map))
