@@ -1399,7 +1399,7 @@ class Medoo
 		return $result;
 	}
 
-	public function insert($table, $datas)
+	public function insert($table, $datas, $clean = true)
 	{
 		$stack = [];
 		$columns = [];
@@ -1476,22 +1476,30 @@ class Medoo
 			$stack[] = '(' . implode(', ', $values) . ')';
 		}
 
-		foreach ($columns as $key)
+		if($clean)
 		{
-			$fields[] = $this->columnQuote(preg_replace("/(\s*\[JSON\]$)/i", '', $key));
+			foreach ($columns as $key)
+			{
+				$fields[] = $this->columnQuote(preg_replace("/(\s*\[JSON\]$)/i", '', $key));
+			}
 		}
+		
 
 		return $this->exec('INSERT INTO ' . $this->tableQuote($table) . ' (' . implode(', ', $fields) . ') VALUES ' . implode(', ', $stack), $map);
 	}
 
-	public function update($table, $data, $where = null)
+	public function update($table, $data, $where = null, $clean = true)
 	{
 		$fields = [];
 		$map = [];
 
 		foreach ($data as $key => $value)
 		{
-			$column = $this->columnQuote(preg_replace("/(\s*\[(JSON|\+|\-|\*|\/)\]$)/i", '', $key));
+			if($clean)
+			{
+				$column = $this->columnQuote(preg_replace("/(\s*\[(JSON|\+|\-|\*|\/)\]$)/i", '', $key));
+			}
+			
 
 			if ($raw = $this->buildRaw($value, $map))
 			{
