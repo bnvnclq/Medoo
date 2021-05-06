@@ -12,6 +12,9 @@
 
 > The lightweight PHP database framework to accelerate development
 
+## Disclaimer
+* **About** - This is a fork and edited version from the original medoo of catfan, added optional functions for specific use
+
 ## Features
 
 * **Lightweight** - Less than 100 KB, portable with only one file
@@ -36,7 +39,7 @@ PHP 5.4+ and PDO extension installed, recommend PHP 7.0+
 
 Add Medoo to composer.json configuration file.
 ```
-$ composer require catfan/medoo
+$ composer require bnvnclq/bmedoo
 ```
 
 And update the composer
@@ -100,3 +103,5 @@ Medoo is under the MIT license.
 * Official website: [https://medoo.in](https://medoo.in)
 
 * Documentation: [https://medoo.in/doc](https://medoo.in/doc)
+
+* bMedoo Maintainer: [https://bienlaqui.ml](https://bienlaqui.ml)
